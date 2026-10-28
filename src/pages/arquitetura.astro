@@ -1,0 +1,153 @@
+---
+import Base from '../layouts/Base.astro';
+
+const principios = [
+  {
+    titulo: 'Camadas, sempre',
+    texto: 'Bronze guarda a fonte como veio (padronizada, nunca "corrigida"); prata limpa, tipa e liga; ouro responde perguntas. Quando algo dá errado, reprocesso a partir da camada anterior, sem voltar à fonte.',
+    onde: 'SISU Lens, varejo farmacêutico',
+  },
+  {
+    titulo: 'Validar contra uma referência',
+    texto: 'Todo pipeline tem um número de referência externo e um critério escrito: a tabela publicada no TCC, o gabarito manual do vídeo, o card oficial de cada jogador. Se a validação falha, nada é publicado.',
+    onde: 'SISU Lens, Data Siege',
+  },
+  {
+    titulo: 'Privacidade desde o desenho',
+    texto: 'Dado pessoal fica na camada que não sai da máquina. O que é publicado é agregado e passa por supressão de grupos pequenos. A decisão fica documentada, não implícita.',
+    onde: 'SISU Lens (LGPD, k = 5)',
+  },
+  {
+    titulo: 'Arquivos antes de servidores',
+    texto: 'Parquet + DuckDB resolve muita coisa que parece pedir um banco: sem servidor para manter, custo perto de zero e leitura parcial por HTTP Range direto no navegador.',
+    onde: 'SISU Lens',
+  },
+  {
+    titulo: 'Segurança no servidor',
+    texto: 'Regra de acesso mora no banco (Row Level Security) e chave privilegiada só em função de servidor. O front, escrito por mim ou por IA, nunca é a única barreira.',
+    onde: 'Duo Mariel',
+  },
+  {
+    titulo: 'Desenhar pela leitura',
+    texto: 'O layout dos arquivos e das tabelas segue as consultas que o consumidor faz (o painel, o analista), não a forma como a fonte entrega.',
+    onde: 'Gold do SISU Lens, modelo estrela do Data Siege',
+  },
+];
+
+const camadas = ['Ingestão', 'Armazenamento', 'Transformação', 'Qualidade', 'Orquestração', 'Consumo'];
+const matriz = [
+  {
+    projeto: 'SISU Lens (TCC)', slug: 'sisu-lens',
+    c: ['CSVs MEC/INEP (~60 GB)', 'Parquet zstd (bronze/prata/ouro)', 'DuckDB SQL', 'Reconciliação com o TCC, taxa de junção', 'Script de pipeline', 'React + DuckDB-WASM'],
+  },
+  {
+    projeto: 'Data Siege', slug: 'data-siege',
+    c: ['Vídeo (VOD)', 'PostgreSQL, modelo estrela', 'Visão computacional + OCR', 'Gabarito manual + regressão', 'Lote local em GPU', 'Power BI'],
+  },
+  {
+    projeto: 'Duo Mariel', slug: 'duo-mariel',
+    c: ['App web, Edge Function', 'Postgres + Storage (Supabase)', 'SQL, migrações versionadas', 'RLS, revisão do código gerado por IA', 'GitHub Actions (deploy, keep-alive)', 'PWA React + Realtime'],
+  },
+  {
+    projeto: 'Varejo farmacêutico (trabalho)', slug: null,
+    c: ['ERP via API, scraping, CSV', 'MinIO', 'DuckDB', '—', 'Prefect em Docker', 'Power BI (20+)'],
+  },
+];
+
+const referencia = `flowchart LR
+  subgraph F[Fontes]
+    A1[APIs]
+    A2[Arquivos públicos]
+    A3[Sistemas internos]
+  end
+  subgraph L[Armazenamento em camadas]
+    B[(Bronze<br/>como veio)]
+    S[(Prata<br/>limpa e ligada)]
+    G[(Ouro<br/>pronta para consumo)]
+  end
+  Q{Validação<br/>contra referência}
+  A1 & A2 & A3 -->|extração idempotente| B --> S --> G --> Q
+  Q -->|ok| P[Publicação]
+  Q -->|falhou| X[Mantém versão anterior<br/>e alerta]
+  P --> D1[Power BI]
+  P --> D2[Site / DuckDB-WASM]
+  P --> D3[Modelos de ML]
+  O[[Orquestrador<br/>Prefect · GitHub Actions]] -.-> B & S & G`;
+---
+<Base titulo="Arquitetura" descricao="Os princípios de arquitetura de dados que se repetem nos meus projetos.">
+  <section class="wrap topo-pag">
+    <p class="eyebrow">Arquitetura de dados</p>
+    <h1>Como eu desenho plataformas de dados</h1>
+    <p class="lead">
+      Os projetos têm tamanhos e fontes diferentes, mas o desenho se repete. Esta página resume os
+      princípios, a arquitetura de referência e onde cada um aparece na prática.
+    </p>
+  </section>
+
+  <section class="wrap">
+    <h2>Arquitetura de referência</h2>
+    <pre data-language="mermaid">{referencia}</pre>
+  </section>
+
+  <section class="section wrap">
+    <h2>Princípios</h2>
+    <div class="grid c3">
+      {principios.map((p, i) => (
+        <div class="card pr">
+          <span class="num">{String(i + 1).padStart(2, '0')}</span>
+          <h3>{p.titulo}</h3>
+          <p>{p.texto}</p>
+          <p class="onde">{p.onde}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>Os projetos, camada por camada</h2>
+    <div class="tabela card">
+      <table>
+        <thead><tr><th>Projeto</th>{camadas.map((c) => <th>{c}</th>)}</tr></thead>
+        <tbody>
+          {matriz.map((m) => (
+            <tr>
+              <th scope="row">{m.slug ? <a href={`/projetos/${m.slug}`}>{m.projeto}</a> : m.projeto}</th>
+              {m.c.map((x) => <td>{x}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="section wrap"><div class="prose">
+    <h2>Como eu documento decisões</h2>
+    <p>
+      Cada estudo de caso tem uma tabela <strong>Decisão · Alternativa descartada · Por quê</strong>.
+      É uma versão curta de um <em>Architecture Decision Record</em> (ADR): o importante não é só o que
+      foi escolhido, mas o que foi considerado e por que perdeu. Nos repositórios, as decisões maiores
+      ficam em <code>docs/decisoes/</code>, uma por arquivo, com contexto, opções e consequências.
+    </p>
+    <p>
+      Os READMEs seguem a mesma ordem: problema, arquitetura, como rodar, como os dados são validados
+      e limitações conhecidas. As limitações também ficam escritas, porque um pipeline sem limitações
+      documentadas só não foi testado o bastante.
+    </p>
+  </div></section>
+</Base>
+
+<style>
+  .topo-pag { padding-top: 56px; padding-bottom: 24px; }
+  .pr { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
+  .pr h3, .pr p { margin: 0; }
+  .pr p { color: var(--ink-2); font-size: 0.95rem; }
+  .pr .onde { margin-top: auto; padding-top: 8px; font: 0.8rem var(--mono); color: var(--accent); }
+  .num { font: 600 0.8rem/1 var(--mono); color: var(--ink-3); }
+  .tabela { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; min-width: 820px; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font: 500 0.75rem/1.2 var(--mono); text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); }
+  tbody th { font-weight: 600; white-space: nowrap; }
+  tbody tr:last-child > * { border-bottom: 0; }
+  td { color: var(--ink-2); }
+</style>

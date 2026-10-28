@@ -1,0 +1,53 @@
+---
+// Capa ilustrada: um ícone principal grande e até dois ícones satélites, na cor da área.
+import { icones, type NomeIcone } from './icones';
+
+interface Props {
+  icones: NomeIcone[];
+  cor: string;
+  selo?: string;
+}
+const { icones: nomes, cor, selo } = Astro.props;
+const [principal, ...satelites] = nomes;
+const svg = (n: NomeIcone) =>
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${icones[n]}</svg>`;
+---
+<div class="capa" style={`--cor:${cor}`} aria-hidden="true">
+  <div class="grade"></div>
+  {selo && <span class="selo">{selo}</span>}
+  <div class="principal" set:html={svg(principal)} />
+  {satelites.slice(0, 2).map((n, i) => <div class={`sat s${i}`} set:html={svg(n)} />)}
+</div>
+
+<style>
+  .capa {
+    position: relative; aspect-ratio: 16 / 9; overflow: hidden;
+    background:
+      radial-gradient(circle at 30% 40%, color-mix(in srgb, var(--cor) 26%, transparent), transparent 60%),
+      linear-gradient(135deg, color-mix(in srgb, var(--cor) 12%, var(--surface)), var(--surface-2));
+  }
+  .grade {
+    position: absolute; inset: 0; opacity: 0.5;
+    background-image:
+      linear-gradient(color-mix(in srgb, var(--cor) 14%, transparent) 1px, transparent 1px),
+      linear-gradient(90deg, color-mix(in srgb, var(--cor) 14%, transparent) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(circle at 35% 45%, #000, transparent 75%);
+  }
+  .principal, .sat {
+    position: absolute; display: grid; place-items: center; color: var(--cor);
+    background: var(--surface); border: 1px solid color-mix(in srgb, var(--cor) 30%, var(--line));
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--cor) 18%, transparent);
+  }
+  .principal { left: 50%; top: 50%; width: 34%; aspect-ratio: 1; translate: -62% -50%; border-radius: 22%; }
+  .principal :global(svg) { width: 52%; height: 52%; }
+  .sat { width: 17%; aspect-ratio: 1; border-radius: 26%; }
+  .sat :global(svg) { width: 52%; height: 52%; }
+  .s0 { left: 66%; top: 18%; }
+  .s1 { left: 70%; top: 58%; }
+  .selo {
+    position: absolute; top: 12px; left: 12px; z-index: 1;
+    font: 600 0.7rem/1 var(--mono); letter-spacing: 0.06em; text-transform: uppercase;
+    padding: 5px 8px; border-radius: 6px; background: var(--cor); color: var(--surface);
+  }
+</style>

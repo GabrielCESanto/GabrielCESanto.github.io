@@ -1,0 +1,165 @@
+:root {
+  --bg: #f7f7f4;
+  --surface: #ffffff;
+  --surface-2: #efefe9;
+  --ink: #16181d;
+  --ink-2: #4a4f5a;
+  --ink-3: #767c88;
+  --line: #e1e1da;
+  --accent: #0f6e6e;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcefed;
+  --c-eng: #0f6e6e;
+  --c-ds: #7a4bc2;
+  --c-bi: #b5651d;
+  --c-be: #2f5fb3;
+  --c-ia: #b8336a;
+  --code-bg: #f1f1ec;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.04), 0 4px 16px rgb(0 0 0 / 0.04);
+  --radius: 14px;
+  --max: 1120px;
+  --sans: 'IBM Plex Sans', system-ui, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #111317;
+    --surface: #171a1f;
+    --surface-2: #1f2329;
+    --ink: #eceef1;
+    --ink-2: #b4bac4;
+    --ink-3: #868d99;
+    --line: #2a2f37;
+    --accent: #4fc1b6;
+    --accent-ink: #0b1414;
+    --accent-soft: #163332;
+    --c-eng: #4fc1b6;
+    --c-ds: #b293ea;
+    --c-bi: #e2a066;
+    --c-be: #7fa5ea;
+    --c-ia: #ec7fae;
+    --code-bg: #1b1f25;
+    --shadow: none;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --bg: #111317;
+  --surface: #171a1f;
+  --surface-2: #1f2329;
+  --ink: #eceef1;
+  --ink-2: #b4bac4;
+  --ink-3: #868d99;
+  --line: #2a2f37;
+  --accent: #4fc1b6;
+  --accent-ink: #0b1414;
+  --accent-soft: #163332;
+  --c-eng: #4fc1b6;
+  --c-ds: #b293ea;
+  --c-bi: #e2a066;
+  --c-be: #7fa5ea;
+  --c-ia: #ec7fae;
+  --code-bg: #1b1f25;
+  --shadow: none;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 400 16px/1.65 var(--sans);
+  overflow-x: hidden;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:hover { text-decoration-thickness: 2px; }
+h1, h2, h3, h4 { line-height: 1.2; letter-spacing: -0.01em; margin: 0 0 0.5em; }
+h1 { font-size: clamp(2rem, 4.5vw, 3rem); font-weight: 600; }
+h2 { font-size: 1.6rem; font-weight: 600; }
+h3 { font-size: 1.2rem; font-weight: 600; }
+p { margin: 0 0 1em; }
+code, pre { font-family: var(--mono); font-size: 0.88em; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 16px; }
+@media (min-width: 720px) { .wrap { padding: 0 28px; } }
+
+.eyebrow {
+  font: 500 0.78rem/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-3);
+  margin-bottom: 0.9rem;
+}
+.lead { font-size: 1.15rem; color: var(--ink-2); max-width: 62ch; }
+.muted { color: var(--ink-3); }
+.section { padding-top: 56px; padding-bottom: 56px; }
+.section-head { display: flex; justify-content: space-between; align-items: end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.section-head h2 { margin: 0; }
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 16px; border-radius: 10px;
+  font: 500 0.95rem/1 var(--sans);
+  text-decoration: none; cursor: pointer;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+}
+.btn:hover { border-color: var(--ink-3); }
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.btn.primary:hover { filter: brightness(1.08); }
+
+.tag {
+  display: inline-block; padding: 3px 9px; border-radius: 999px;
+  font: 500 0.75rem/1.4 var(--mono);
+  background: var(--surface-2); color: var(--ink-2);
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.area { font: 600 0.72rem/1 var(--mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.area::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: currentColor; margin-right: 7px; vertical-align: 1px; }
+
+.grid { display: grid; gap: 18px; }
+@media (min-width: 720px) { .grid.c2 { grid-template-columns: repeat(2, 1fr); } .grid.c3 { grid-template-columns: repeat(3, 1fr); } }
+
+.metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+@media (min-width: 720px) { .metrics { grid-template-columns: repeat(4, 1fr); } }
+.metric { padding: 16px; }
+.metric b { display: block; font: 600 1.6rem/1.1 var(--sans); letter-spacing: -0.02em; }
+.metric span { font-size: 0.85rem; color: var(--ink-3); }
+
+/* Texto longo (estudos de caso e páginas em prosa) */
+.prose { max-width: 80ch; }
+.prose h2 { margin-top: 2.2em; padding-top: 0.6em; border-top: 1px solid var(--line); }
+.prose h3 { margin-top: 1.6em; }
+.prose ul, .prose ol { padding-left: 1.3em; margin: 0 0 1em; }
+.prose li { margin: 0.25em 0; }
+.prose img { border-radius: 10px; border: 1px solid var(--line); margin: 1.2em 0; }
+.prose blockquote { margin: 1.2em 0; padding: 0.6em 1em; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 8px 8px 0; color: var(--ink); }
+.prose blockquote p:last-child { margin: 0; }
+.prose :not(pre) > code { background: var(--code-bg); padding: 0.12em 0.4em; border-radius: 5px; }
+.prose pre { padding: 14px 16px; border-radius: 10px; overflow-x: auto; border: 1px solid var(--line); background: var(--code-bg) !important; }
+.prose table { width: 100%; border-collapse: collapse; margin: 1.2em 0; font-size: 0.93rem; display: block; overflow-x: auto; }
+.prose th, .prose td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.prose th { font-weight: 600; color: var(--ink-2); white-space: nowrap; }
+.shiki, .shiki span { color: var(--shiki-light); }
+:root[data-theme='dark'] .shiki, :root[data-theme='dark'] .shiki span { color: var(--shiki-dark); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .shiki, :root:not([data-theme='light']) .shiki span { color: var(--shiki-dark); } }
+
+/* Diagramas mermaid */
+.diagram { margin: 1.4em 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; overflow-x: auto; }
+.diagram svg { max-width: 100%; height: auto; margin: 0 auto; display: block; }
+/* No celular o diagrama mantém um tamanho legível e rola na horizontal */
+@media (max-width: 720px) { .diagram svg { min-width: 520px; } }
+/* Enquanto o mermaid não carrega (ou sem JS), o código-fonte fica discreto */
+pre[data-language='mermaid'], pre:has(> code.language-mermaid) { white-space: pre; color: var(--ink-3); max-height: 16em; overflow: auto; }

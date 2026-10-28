@@ -1,0 +1,174 @@
+---
+import Base from '../layouts/Base.astro';
+import { perfil } from '../data/perfil';
+
+// Linha do tempo: mais recente primeiro. Fonte: currículo de set/2026.
+const experiencia = [
+  {
+    periodo: 'ago/2025 – atual',
+    cargo: 'Coordenador de Dados',
+    lugar: 'Drogamais · Londrina/PR',
+    itens: [
+      'Lidero o time de Inteligência de Mercado (3 pessoas), com 3 a 4 demandas novas por semana além da manutenção contínua.',
+      'Mais de 20 dashboards estratégicos usados por todos os setores (comercial, financeiro, apoio ao associado e centro de distribuição), atendendo cerca de 40 pessoas.',
+      'Pipeline orquestrado com Prefect integrando cerca de 10 fontes (ERP via API, web scraping e CSV): vendas, estoque, compras e panorama de mercado.',
+      'Automação de processos de 2–3 horas para 15 minutos com Python e Power Automate (88–92% menos tempo).',
+    ],
+  },
+  {
+    periodo: 'abr/2025 – ago/2025',
+    cargo: 'Analista de Dados Júnior II',
+    lugar: 'Drogamais · Londrina/PR',
+    itens: [
+      'Promovido em reconhecimento aos resultados em análise e automação.',
+      'Dashboards em Power BI e automações de processos de 30–40 minutos para 2–3 minutos (90–95% menos tempo).',
+    ],
+  },
+  {
+    periodo: 'dez/2024 – abr/2025',
+    cargo: 'Analista de Dados Júnior',
+    lugar: 'Drogamais · Londrina/PR',
+    itens: [
+      'Captação e análise de dados de cerca de 250 associados, com balanços mensais para apoiar decisões.',
+      'Análise exploratória e estatística para a área.',
+    ],
+  },
+  {
+    periodo: 'jan/2024 – jul/2024',
+    cargo: 'Estagiário em Análise de BI',
+    lugar: 'DASHX · Campinas/SP (remoto)',
+    itens: [
+      'Desenvolvimento e manutenção de cerca de 5 dashboards de clientes em Power BI.',
+      'Apoio na concepção de novos produtos de BI.',
+    ],
+  },
+  {
+    periodo: 'mai/2021 – set/2021',
+    cargo: 'Analista de Dados em E-sports',
+    lugar: 'Red Wolf · remoto',
+    itens: [
+      'Análise de 2 a 4 partidas de Rainbow Six Siege por dia, levantando dados de jogadores e times adversários.',
+      'Apoio à comissão técnica na tomada de decisão a partir dos padrões encontrados.',
+    ],
+  },
+];
+
+const formacao = [
+  {
+    titulo: 'Bacharelado em Engenharia de Computação',
+    lugar: 'UTFPR · Cornélio Procópio',
+    texto: 'TCC aprovado em 2026: "Análise de dados: um estudo sobre o número de inscritos na UTFPR-CP", com metodologia CRISP-DM. Orientação do Prof. Dr. Francisco Pereira Junior.',
+    link: { href: '/projetos/sisu-lens', rotulo: 'Veja a evolução do TCC no SISU Lens →' },
+  },
+  {
+    titulo: 'Ciência de Dados para Futebol',
+    lugar: 'Futebol Interativo · em andamento',
+    texto: 'Machine learning, Python, modelagem estatística e visualização de dados aplicados ao futebol.',
+  },
+];
+
+const lideranca = [
+  { titulo: 'Presidente do DACOMP', texto: 'Diretório Acadêmico de Computação da UTFPR, out/2015 – out/2018: diretoria de mais de 30 pessoas e mais de 20 eventos para mais de 900 alunos.' },
+  { titulo: 'Membro do conselho COGEP', texto: 'UTFPR, mar/2017 – nov/2019.' },
+  { titulo: 'Criador e host do Hallcast', texto: 'Podcast universitário da UTFPR-CP, fev/2022 – jun/2022.' },
+];
+
+const stack = [
+  { grupo: 'Linguagens', itens: ['Python', 'SQL', 'TypeScript', 'DAX'] },
+  { grupo: 'Dados', itens: ['DuckDB', 'PostgreSQL', 'SQL Server', 'MariaDB', 'Parquet', 'pandas'] },
+  { grupo: 'Engenharia', itens: ['Prefect', 'MinIO', 'Docker', 'GitHub Actions', 'APIs REST', 'Web scraping'] },
+  { grupo: 'BI', itens: ['Power BI', 'Power Automate', 'ECharts', 'Modelagem dimensional'] },
+  { grupo: 'Ciência de dados e IA', itens: ['Estatística aplicada', 'CRISP-DM', 'OpenCV', 'OCR', 'Claude Code'] },
+  { grupo: 'Web e back-end', itens: ['React', 'Supabase', 'Edge Functions', 'Row Level Security'] },
+];
+---
+<Base titulo="Sobre" descricao={`Sobre ${perfil.nome}: experiência, formação e stack.`}>
+  <section class="wrap topo-pag">
+    <img class="foto" src={perfil.foto} alt={`Foto de ${perfil.nomeCurto}`} width="480" height="480" />
+    <div>
+      <p class="eyebrow">Sobre · {perfil.local}</p>
+      <h1>{perfil.nome}</h1>
+      <p class="lead">
+        Engenheiro de computação (UTFPR) e coordenador de dados. Comecei analisando partidas de
+        e-sports, passei pelo BI e fui descendo a pilha: do dashboard para o modelo, do modelo para o
+        pipeline, do pipeline para a arquitetura. Meu próximo passo é unir isso à ciência de dados,
+        com interesse especial em esportes e finanças.
+      </p>
+      <div class="cta">
+        <a class="btn primary" href={perfil.links.linkedin}>LinkedIn</a>
+        <a class="btn" href={perfil.links.github}>GitHub</a>
+        <a class="btn" href={perfil.links.whatsapp}>WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>Experiência</h2>
+    <ol class="tl">
+      {experiencia.map((e) => (
+        <li>
+          <span class="per">{e.periodo}</span>
+          <div>
+            <h3>{e.cargo} <span class="muted">· {e.lugar}</span></h3>
+            <ul>{e.itens.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="section wrap">
+    <h2>Formação</h2>
+    <div class="grid c2">
+      {formacao.map((f) => (
+        <div class="card bloco">
+          <h3>{f.titulo}</h3>
+          <p class="eyebrow">{f.lugar}</p>
+          <p class="muted">{f.texto}</p>
+          {f.link && <a href={f.link.href}>{f.link.rotulo}</a>}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>Liderança</h2>
+    <div class="grid c3">
+      {lideranca.map((l) => (
+        <div class="card bloco"><h3>{l.titulo}</h3><p class="muted">{l.texto}</p></div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <h2>Stack</h2>
+    <div class="grid c3">
+      {stack.map((s) => (
+        <div class="card st">
+          <p class="eyebrow">{s.grupo}</p>
+          <div class="tags">{s.itens.map((i) => <span class="tag">{i}</span>)}</div>
+        </div>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .topo-pag { padding-top: 56px; padding-bottom: 8px; display: grid; gap: 28px; align-items: center; }
+  @media (min-width: 720px) { .topo-pag { grid-template-columns: 220px 1fr; gap: 40px; } }
+  .foto { width: 180px; aspect-ratio: 1; object-fit: cover; border-radius: 26px; border: 1px solid var(--line); }
+  @media (min-width: 720px) { .foto { width: 100%; } }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .tl { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
+  .tl > li { display: grid; gap: 4px 24px; padding: 0 0 26px 22px; position: relative; }
+  .tl > li::before { content: ''; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+  @media (min-width: 720px) { .tl > li { grid-template-columns: 170px 1fr; } }
+  .per { font: 500 0.85rem/1.6 var(--mono); color: var(--ink-3); }
+  .tl h3 { margin: 0 0 6px; }
+  .tl ul { margin: 0; padding-left: 1.1em; color: var(--ink-2); }
+  .bloco { padding: 22px; display: flex; flex-direction: column; gap: 6px; }
+  .bloco h3, .bloco p { margin: 0; }
+  .bloco .eyebrow { margin: 0 0 4px; }
+  .st { padding: 18px; }
+  .st .eyebrow { margin-bottom: 10px; }
+</style>

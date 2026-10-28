@@ -1,0 +1,28 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Capa from './Capa.astro';
+import { areas } from '../data/perfil';
+
+interface Props { projeto: CollectionEntry<'projetos'> }
+const { projeto } = Astro.props;
+const d = projeto.data;
+const area = areas[d.area];
+---
+<a class="card pc" href={`/projetos/${projeto.id}`}>
+  <Capa icones={d.icones} cor={area.cor} selo={d.selo} />
+  <div class="pc-in">
+    <span class="area" style={`color:${area.cor}`}>{area.rotulo}</span>
+    <h3>{d.titulo}</h3>
+    <p>{d.resumo}</p>
+    <div class="tags">{d.stack.slice(0, 5).map((s) => <span class="tag">{s}</span>)}</div>
+  </div>
+</a>
+
+<style>
+  .pc { display: flex; flex-direction: column; overflow: hidden; color: inherit; text-decoration: none; transition: border-color 0.15s, transform 0.15s; }
+  .pc:hover { border-color: var(--ink-3); transform: translateY(-2px); }
+  .pc > :global(.capa) { border-bottom: 1px solid var(--line); }
+  .pc-in { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .pc h3 { margin: 0; }
+  .pc p { margin: 0; color: var(--ink-2); font-size: 0.95rem; flex: 1; }
+</style>
