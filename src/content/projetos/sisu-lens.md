@@ -11,6 +11,9 @@ metricas:
   - { valor: '> 99,5%', rotulo: 'inscrições ligadas ao ENEM' }
   - { valor: '18 de 20', rotulo: 'edições idênticas ao TCC' }
 icones: [formatura, barras, cadeado]
+links:
+  site: https://gabrielcesanto.github.io/sisu-lens/
+  repo: https://github.com/GabrielCESanto/sisu-lens
 selo: TCC
 ordem: 1
 destaque: true
@@ -66,7 +69,7 @@ flowchart LR
 |---|---|---|
 | Bronze | Um Parquet por edição/ano, colunas padronizadas, sem nome, CPF, inscrição ou data de nascimento | publicável |
 | Silver | Inscrição do SISU ligada ao participante do ENEM | **só local** (LGPD) |
-| Gold | Contagens e médias por recorte, com grupos menores que 5 suprimidos | servida ao site |
+| Gold | Contagens e médias por recorte, com grupos menores que 5 suprimidos | servida ao site (GitHub Pages) |
 
 ## Decisões técnicas
 
@@ -79,6 +82,7 @@ flowchart LR
 | **Parquet zstd** | CSV, Postgres | SISU 2019-2: 575 MB → 26,6 MB. Colunar, comprimido e legível por HTTP Range |
 | **DuckDB-WASM** no navegador | API + banco | Sem servidor para manter nem pagar: o navegador baixa só os blocos do arquivo que o filtro precisa |
 | Supressão de grupos < 5 na gold | Publicar a silver | Evita reidentificação (LGPD), documentado em `docs/lgpd.md` |
+| Site e gold no **GitHub Pages** (branch `gh-pages`) | Servidor próprio, bucket pago | Gratuito, aceita HTTP Range e mantém os 187 MB de Parquet fora do histórico do código |
 
 ## Qualidade e validação
 
@@ -96,6 +100,8 @@ flowchart LR
 - O fenômeno não é local: somando todas as instituições, as inscrições caíram de **7,3 milhões
   (2014) para 2,6 milhões (2023), −64%**. A UTFPR tem a 3ª maior queda absoluta do país.
 - O painel replica as páginas do Power BI do TCC e acrescenta rankings por instituição e por curso.
+  Está no ar em [gabrielcesanto.github.io/sisu-lens](https://gabrielcesanto.github.io/sisu-lens/) e
+  também abre [na seção Dashboards](/#sisu-lens).
 
 | Ranking de queda por instituição | Perfil socioeconômico |
 |---|---|
@@ -103,6 +109,6 @@ flowchart LR
 
 ## Próximos passos
 
-- Publicar a gold (Hugging Face Datasets) e o site (Cloudflare Pages).
+- Publicar também o bronze sem dados pessoais (Hugging Face Datasets) para quem quiser refazer as análises.
 - Orquestrar o pipeline e adicionar testes de dados automatizados (contagens, domínios, unicidade).
 - Reavaliar a supressão k=5 em recortes muito finos (renda × UF perde 30% das linhas).

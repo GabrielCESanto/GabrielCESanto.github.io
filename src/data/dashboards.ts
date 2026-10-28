@@ -1,6 +1,7 @@
-// Painéis do Power BI publicados com "Publicar na Web" (públicos, sem login).
-// Vieram de https://sites.google.com/view/gabs-dashboards. Para incluir outro, copie o link
-// "app.powerbi.com/view?r=..." de Arquivo > Inserir relatório > Publicar na Web.
+// Painéis da seção Dashboards. Os de Power BI usam "Publicar na Web" (públicos, sem login) e vieram
+// de https://sites.google.com/view/gabs-dashboards: para incluir outro, copie o link
+// "app.powerbi.com/view?r=..." de Arquivo > Inserir relatório > Publicar na Web. O SISU Lens é um BI
+// web próprio, publicado em gabrielcesanto.github.io/sisu-lens (repositório sisu-lens, branch gh-pages).
 import type { NomeIcone } from '../components/icones';
 
 export type Dashboard = {
@@ -13,9 +14,32 @@ export type Dashboard = {
   url: string;
   icones: NomeIcone[];
   projeto?: string; // slug do estudo de caso relacionado
+  repo?: string;
+  selo?: string;
+  cor?: string; // padrão: cor de BI
 };
 
 export const dashboards: Dashboard[] = [
+  {
+    id: 'sisu-lens',
+    titulo: 'SISU Lens · TCC',
+    contexto: 'Educação · BI web próprio',
+    descricao:
+      'O Power BI do meu TCC reescrito como site: 51,2 milhões de inscrições do SISU (2014–2023) e o perfil socioeconômico do ENEM, consultados direto no navegador com DuckDB-WASM, sem servidor.',
+    destaques: [
+      'Inscrições por semestre, sexo, curso e idade',
+      'Renda, escolaridade dos pais e tipo de escola',
+      'Mapa de origem dos candidatos por UF e município',
+      'Ranking de queda por universidade e curso',
+    ],
+    ferramenta: 'React · ECharts · DuckDB-WASM · Parquet',
+    url: '/sisu-lens/',
+    icones: ['formatura', 'barras', 'mapa'],
+    projeto: 'sisu-lens',
+    repo: 'https://github.com/GabrielCESanto/sisu-lens',
+    selo: 'TCC',
+    cor: 'var(--c-eng)',
+  },
   {
     id: 'data-siege',
     titulo: 'Project Data Siege',
@@ -63,17 +87,5 @@ export const dashboards: Dashboard[] = [
     ferramenta: 'Power BI · DAX',
     url: 'https://app.powerbi.com/view?r=eyJrIjoiNzg1OTRkNWEtZjZhYS00ZDE0LWJlNGUtZmYzNGMwZjg0NjgwIiwidCI6IjJlNDg4MGU0LWI2NzYtNDAyOS1hNjM4LTBlNTFkYmMzMzYxYiJ9',
     icones: ['funil', 'pizza', 'cifrao'],
-  },
-];
-
-// BIs feitos como aplicação web (código próprio, sem Power BI).
-export const paineisWeb = [
-  {
-    titulo: 'SISU Lens · TCC',
-    descricao:
-      'O Power BI do meu TCC reescrito como site: 51,2 milhões de inscrições do SISU (2014–2023) consultadas direto no navegador com DuckDB-WASM.',
-    icones: ['formatura', 'barras', 'mapa'] as NomeIcone[],
-    projeto: 'sisu-lens',
-    ferramenta: 'React · ECharts · DuckDB-WASM · Parquet',
   },
 ];

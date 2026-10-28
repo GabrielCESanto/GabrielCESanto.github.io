@@ -8,13 +8,14 @@ interface Props {
 }
 const { titulo, descricao = perfil.frase } = Astro.props;
 const tituloPagina = titulo ? `${titulo} · ${perfil.nomeCurto}` : `${perfil.nomeCurto} · ${perfil.cargo}`;
-const atual = Astro.url.pathname.replace(/\/$/, '') || '/';
+// O site é uma página só: o menu leva às seções da home (também a partir dos estudos de caso).
 const nav = [
-  { href: '/projetos', rotulo: 'Projetos' },
-  { href: '/dashboards', rotulo: 'Dashboards' },
-  { href: '/arquitetura', rotulo: 'Arquitetura' },
-  { href: '/sobre', rotulo: 'Sobre' },
+  { id: 'projetos', rotulo: 'Projetos' },
+  { id: 'dashboards', rotulo: 'Dashboards' },
+  { id: 'arquitetura', rotulo: 'Arquitetura' },
+  { id: 'sobre', rotulo: 'Sobre' },
 ];
+const emEstudo = Astro.url.pathname.startsWith('/projetos/');
 ---
 <!doctype html>
 <html lang="pt-BR">
@@ -43,13 +44,13 @@ const nav = [
   <body>
     <header class="topo">
       <div class="wrap topo-in">
-        <a href="/" class="marca" aria-label="Início">
-          <span class="logo" aria-hidden="true">GC</span>
+        <a href="/#inicio" class="marca" aria-label="Início">
+          <img class="logo" src={perfil.foto} alt="" width="64" height="64" />
           <span class="marca-txt">{perfil.nomeCurto}</span>
         </a>
         <nav aria-label="Principal">
           {nav.map((i) => (
-            <a href={i.href} aria-current={atual.startsWith(i.href) ? 'page' : undefined}>{i.rotulo}</a>
+            <a href={`/#${i.id}`} data-secao={i.id} aria-current={emEstudo && i.id === 'projetos' ? 'page' : undefined}>{i.rotulo}</a>
           ))}
           <button id="tema" class="tema" type="button" aria-label="Alternar tema claro/escuro" title="Alternar tema">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
@@ -81,6 +82,22 @@ const nav = [
         try { localStorage.setItem('tema', r.dataset.theme); } catch {}
         document.dispatchEvent(new Event('tema'));
       });
+    </script>
+
+    <script is:inline>
+      // Destaca no menu a seção que está na tela (só na home).
+      const links = [...document.querySelectorAll('nav a[data-secao]')];
+      const secoes = links.map((a) => document.getElementById(a.dataset.secao)).filter(Boolean);
+      if (secoes.length) {
+        const marcar = () => {
+          const linha = innerHeight * 0.35;
+          let atual = null;
+          for (const s of secoes) if (s.getBoundingClientRect().top <= linha) atual = s.id;
+          for (const a of links) a.dataset.secao === atual ? a.setAttribute('aria-current', 'true') : a.removeAttribute('aria-current');
+        };
+        addEventListener('scroll', marcar, { passive: true });
+        marcar();
+      }
     </script>
 
     <script type="module" is:inline>
@@ -116,6 +133,9 @@ const nav = [
           }
         };
         await desenhar();
+        // O diagrama muda a altura da página: quem chegou por um link com âncora (/#sobre) volta
+        // para o lugar certo.
+        if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView();
         document.addEventListener('tema', desenhar);
       }
     </script>
@@ -132,8 +152,8 @@ const nav = [
   .topo-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 62px; }
   .marca { display: flex; align-items: center; gap: 10px; color: var(--ink); text-decoration: none; font-weight: 600; }
   .logo {
-    display: grid; place-items: center; width: 32px; height: 32px; border-radius: 9px;
-    background: var(--accent); color: var(--accent-ink); font: 600 0.8rem/1 var(--mono);
+    width: 34px; height: 34px; border-radius: 50%; object-fit: cover;
+    border: 2px solid var(--accent);
   }
   nav { display: flex; align-items: center; gap: 2px; }
   nav a {
@@ -141,7 +161,7 @@ const nav = [
     padding: 7px 10px; border-radius: 8px;
   }
   nav a:hover { color: var(--ink); background: var(--surface-2); }
-  nav a[aria-current='page'] { color: var(--ink); font-weight: 500; background: var(--surface-2); }
+  nav a[aria-current] { color: var(--ink); font-weight: 500; background: var(--surface-2); }
   .tema {
     display: grid; place-items: center; width: 34px; height: 34px; margin-left: 4px;
     border: 1px solid var(--line); background: var(--surface); color: var(--ink-2);

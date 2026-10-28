@@ -30,21 +30,14 @@ Os documentos de júnior listam tecnologias. Os de sênior mostram **trade-offs 
 5. **Diagrama que mostra o fluxo**, não um amontoado de logos: fonte → camadas → validação →
    consumo, com o que roda onde e quando.
 
-## 2. Como mostrar o trabalho da empresa sem expor a empresa
+## 2. Engenharia que dá para mostrar: projetos com dados abertos
 
-O pipeline com Prefect, MinIO e DuckDB é o seu maior diferencial e não pode ser publicado. Duas
-peças resolvem:
-
-**a) Estudo de caso anonimizado** (já criado como rascunho em `src/content/projetos/drogamais.md`).
-Conta o problema, a arquitetura, as decisões, a gestão do time e o resultado em números, sem nomes de
-sistemas internos, fornecedores, valores de venda ou prints com dados reais. Confirme com a empresa o
-que pode ser dito.
-
-**b) Repositório de referência público**, que recomendo como próximo projeto. Recrie a **mesma
-arquitetura** com dados abertos:
+Pipeline, orquestração e infraestrutura só convencem quando o código está aberto e roda na máquina
+de quem avalia. Por isso os projetos de engenharia do portfólio usam **dados públicos** (Kaggle,
+dados.gov.br, CVM, B3, INEP), e não dados de empresa. Um repositório de referência típico:
 
 ```
-pipeline-referencia/            (nome sugerido: lakehouse-local ou dados-abertos-cvm)
+pipeline-referencia/            (ex.: dados-abertos-cvm)
 ├── docker-compose.yml          Prefect server + worker, MinIO
 ├── flows/                      extração (API CVM/B3), bronze → prata → ouro em DuckDB
 ├── tests/                      pytest + testes de dados (contagens, unicidade, domínios)
@@ -53,21 +46,21 @@ pipeline-referencia/            (nome sugerido: lakehouse-local ou dados-abertos
 └── README.md
 ```
 
-Ele mostra exatamente o que você faz no trabalho, roda com `docker compose up` e coincide com o
-**mês 5 do seu plano** (pipeline medalhão com dados da CVM/B3). Depois, a mesma base migra para
-Databricks no plano de cloud: o mesmo projeto conta a evolução local → nuvem.
+Ele roda com `docker compose up` e pode migrar depois para a nuvem (AWS ou Azure): o mesmo projeto
+conta a evolução local → nuvem.
 
 ## 3. Situação dos repositórios
 
-Em 27/10/2026 ficaram **públicos** só o `duo-mariel`, o `zatti` (o site do cliente depende do
-GitHub Pages gratuito, que exige repositório público) e o `GabrielCESanto.github.io` (este
-portfólio). Os demais estão privados, e o portfólio conta esses projetos pelos estudos de caso, sem
-link para o código.
+Em 27/10/2026 ficaram **públicos** o `sisu-lens` (com o painel no ar em
+[gabrielcesanto.github.io/sisu-lens](https://gabrielcesanto.github.io/sisu-lens/)), o `duo-mariel`, o
+`zatti` (o site do cliente depende do GitHub Pages gratuito, que exige repositório público) e o
+`GabrielCESanto.github.io` (este portfólio). Os demais estão privados, e o portfólio conta esses
+projetos pelos estudos de caso, sem link para o código.
 
 | Repositório | Situação | Antes de tornar público de novo |
 |---|---|---|
 | `duo-mariel` | Público, README completo | Fixar no perfil |
-| `sisu-lens` | Privado | Adicionar licença (MIT para o código) e publicar o site |
+| `sisu-lens` | Público; site no GitHub Pages (branch `gh-pages`, build + gold) | Adicionar licença (MIT para o código) |
 | `Project-Data-Siege` | Privado, sem README; o `cv_pipeline` não está versionado | Versionar o `cv_pipeline` (já tem README, ARQUITETURA e VALIDACAO), manter vídeos fora do git |
 | `Problema_N-Cifras` | Privado, `README.txt` vazio | `README.md` com as 3 versões (sequencial, paralela, distribuída) e a tabela de tempos |
 | `Analise-de-Inscritos---TCC` | Privado | README apontando para o SISU Lens |

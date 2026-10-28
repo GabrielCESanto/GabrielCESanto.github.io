@@ -9,7 +9,7 @@ e painéis que transformam dados públicos e de negócio em decisão, do CSV bru
 
 | Projeto | O que é | Stack |
 |---|---|---|
-| [**SISU Lens · TCC**](https://gabrielcesanto.github.io/projetos/sisu-lens) | Meu TCC levado à escala nacional: 51,2 milhões de inscrições do SISU ligadas ao perfil do ENEM, consultadas no navegador sem servidor | Python · DuckDB · Parquet · React · DuckDB-WASM |
+| [**SISU Lens · TCC**](https://gabrielcesanto.github.io/projetos/sisu-lens) | Meu TCC levado à escala nacional: 51,2 milhões de inscrições do SISU ligadas ao perfil do ENEM, consultadas no navegador sem servidor. [Painel no ar](https://gabrielcesanto.github.io/sisu-lens/) | Python · DuckDB · Parquet · React · DuckDB-WASM |
 | [**Project Data Siege**](https://gabrielcesanto.github.io/projetos/data-siege) | Estatísticas de esports extraídas de vídeo por visão computacional + modelo estrela + Power BI | OpenCV · PaddleOCR · PostgreSQL · Power BI |
 | [**Duo Mariel**](https://github.com/GabrielCESanto/duo-mariel) | Site em produção construído com IA: pedidos em tempo real, cifras offline e rolagem por reconhecimento de voz e acordes | React · Supabase · Web Audio · Claude Code |
 
@@ -28,4 +28,4 @@ processos de horas a minutos (**88–95% menos tempo**).
 
 SQL avançado e modelagem dimensional (Kimball) → cloud e Databricks → dbt → machine learning.
 
-[LinkedIn](https://www.linkedin.com/in/gabs-dados) · [Dashboards](https://gabrielcesanto.github.io/dashboards)
+[LinkedIn](https://www.linkedin.com/in/gabs-dados) · [Dashboards](https://gabrielcesanto.github.io/#dashboards)

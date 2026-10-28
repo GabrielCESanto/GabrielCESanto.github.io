@@ -3,6 +3,3 @@ dist/
 .astro/
 .env
 .DS_Store
-
-# Rascunho do case da empresa: fica só local até ser revisado e aprovado.
-src/content/projetos/drogamais.md

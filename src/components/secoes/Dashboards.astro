@@ -1,0 +1,75 @@
+---
+import Capa from '../Capa.astro';
+import { dashboards } from '../../data/dashboards';
+---
+<section id="dashboards" class="section wrap">
+  <p class="eyebrow">Dashboards</p>
+  <h2>Painéis interativos</h2>
+  <p class="lead">
+    Todos são públicos e abrem aqui mesmo: clique em "Carregar" para interagir. O SISU Lens é um BI que
+    escrevi como site, com os dados em Parquet e as consultas feitas no navegador. Os de Power BI de
+    finanças são adaptações de casos profissionais feitas para portfólio, sem dados de clientes.
+  </p>
+
+  <div class="lista">
+    {dashboards.map((d) => {
+      const cor = d.cor ?? 'var(--c-bi)';
+      return (
+        <article class="card dash" id={d.id}>
+          <div class="info">
+            <span class="area" style={`color:${cor}`}>{d.contexto}</span>
+            <h3>{d.titulo}</h3>
+            <p>{d.descricao}</p>
+            <ul>{d.destaques.map((x) => <li>{x}</li>)}</ul>
+            <p class="muted ferr">{d.ferramenta}</p>
+            <div class="acoes">
+              <a class="btn" href={d.url} target="_blank" rel="noopener">Tela cheia ↗</a>
+              {d.repo && <a class="btn" href={d.repo} target="_blank" rel="noopener">Código ↗</a>}
+              {d.projeto && <a class="btn" href={`/projetos/${d.projeto}`}>Estudo de caso</a>}
+            </div>
+          </div>
+          <div class="quadro" data-src={d.url} data-titulo={d.titulo}>
+            <Capa icones={d.icones} cor={cor} selo={d.selo} />
+            <button class="btn primary carregar" type="button">▶ Carregar dashboard</button>
+          </div>
+        </article>
+      );
+    })}
+  </div>
+</section>
+
+<script is:inline>
+  // Os painéis são pesados (Power BI, ou o motor do DuckDB no SISU Lens): só carregam quando a
+  // pessoa pede.
+  document.querySelectorAll('.quadro').forEach((q) => {
+    q.querySelector('.carregar')?.addEventListener('click', () => {
+      const f = document.createElement('iframe');
+      f.src = q.dataset.src;
+      f.title = q.dataset.titulo;
+      f.allowFullscreen = true;
+      f.loading = 'lazy';
+      q.replaceChildren(f);
+      q.classList.add('ativo');
+    });
+  });
+</script>
+
+<style>
+  .lead { margin-bottom: 28px; }
+  .lista { display: flex; flex-direction: column; gap: 22px; }
+  .dash { display: grid; gap: 20px; padding: 20px; scroll-margin-top: 80px; }
+  @media (min-width: 900px) { .dash { grid-template-columns: 1fr 1.7fr; padding: 24px; } }
+  .info h3 { margin: 8px 0 10px; font-size: 1.35rem; }
+  .info p { color: var(--ink-2); }
+  .info ul { margin: 0 0 14px; padding-left: 1.2em; color: var(--ink-2); font-size: 0.95rem; }
+  .ferr { font: 0.82rem var(--mono); }
+  .acoes { display: flex; flex-wrap: wrap; gap: 8px; }
+  .quadro {
+    position: relative; aspect-ratio: 16 / 9.6; border-radius: 10px; overflow: hidden;
+    background: linear-gradient(135deg, var(--surface-2), var(--accent-soft));
+    display: grid; place-items: center; border: 1px solid var(--line);
+  }
+  .quadro > :global(.capa) { position: absolute; inset: 0; aspect-ratio: auto; }
+  .quadro .carregar { position: absolute; left: 50%; bottom: 18px; translate: -50% 0; z-index: 2; }
+  .quadro :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--bg); }
+</style>

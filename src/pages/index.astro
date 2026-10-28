@@ -1,12 +1,12 @@
 ---
+// Página única: cada seção é um componente em components/secoes/ e o menu do topo leva às âncoras.
+// Os estudos de caso continuam em /projetos/<slug>.
 import Base from '../layouts/Base.astro';
-import ProjetoCard from '../components/ProjetoCard.astro';
+import Projetos from '../components/secoes/Projetos.astro';
+import Dashboards from '../components/secoes/Dashboards.astro';
+import Arquitetura from '../components/secoes/Arquitetura.astro';
+import Sobre from '../components/secoes/Sobre.astro';
 import { perfil } from '../data/perfil';
-import { dashboards } from '../data/dashboards';
-import { listarProjetos } from '../data/projetos';
-
-const projetos = await listarProjetos();
-const destaques = projetos.filter((p) => p.data.destaque).slice(0, 3);
 
 const numeros = [
   { valor: '20+', rotulo: 'dashboards de Power BI em produção' },
@@ -14,15 +14,9 @@ const numeros = [
   { valor: '~10', rotulo: 'fontes integradas em pipeline orquestrado' },
   { valor: '3', rotulo: 'pessoas no time de dados que coordeno' },
 ];
-const competencias = [
-  { titulo: 'Engenharia de dados', texto: 'Pipelines em camadas (bronze, prata, ouro), orquestração com Prefect e GitHub Actions, Parquet, DuckDB, MinIO e Docker.' },
-  { titulo: 'BI e modelagem', texto: 'Modelagem dimensional (esquema estrela), Power BI com DAX e painéis web próprios com React e ECharts.' },
-  { titulo: 'Ciência de dados e IA', texto: 'Estatística aplicada, CRISP-DM, visão computacional (OpenCV, OCR) e processamento de áudio para extrair dados de onde eles não existem em tabela. IA como par de programação no dia a dia.' },
-  { titulo: 'Gestão', texto: 'Coordenação de um time de 3 pessoas, priorização de demandas de vários setores e entrega com impacto medido.' },
-];
 ---
 <Base>
-  <section class="hero wrap">
+  <section id="inicio" class="hero wrap">
     <div class="hero-txt">
       <p class="eyebrow">{perfil.cargo} · {perfil.local}</p>
       <h1>Dados públicos e de negócio, do CSV bruto ao painel no ar.</h1>
@@ -32,66 +26,24 @@ const competencias = [
         publiquei o resultado.
       </p>
       <div class="cta">
-        <a class="btn primary" href="/projetos">Ver projetos</a>
-        <a class="btn" href="/dashboards">Dashboards</a>
+        <a class="btn primary" href="#projetos">Ver projetos</a>
+        <a class="btn" href="#dashboards">Dashboards</a>
         <a class="btn" href={perfil.links.linkedin}>LinkedIn</a>
       </div>
     </div>
     <img class="foto" src={perfil.foto} alt={`Foto de ${perfil.nomeCurto}`} width="480" height="480" />
   </section>
 
-  <section class="wrap">
+  <div class="wrap">
     <div class="metrics">
       {numeros.map((n) => <div class="card metric"><b>{n.valor}</b><span>{n.rotulo}</span></div>)}
     </div>
-  </section>
+  </div>
 
-  <section class="section wrap">
-    <div class="section-head">
-      <h2>Projetos em destaque</h2>
-      <a href="/projetos">Todos os projetos →</a>
-    </div>
-    <div class="grid c3">{destaques.map((p) => <ProjetoCard projeto={p} />)}</div>
-  </section>
-
-  <section class="section wrap">
-    <div class="section-head"><h2>O que eu faço</h2></div>
-    <div class="grid c2">
-      {competencias.map((c) => (
-        <div class="card comp"><h3>{c.titulo}</h3><p>{c.texto}</p></div>
-      ))}
-    </div>
-  </section>
-
-  <section class="section wrap">
-    <div class="card faixa">
-      <div>
-        <p class="eyebrow">Arquitetura</p>
-        <h2>Como eu desenho plataformas de dados</h2>
-        <p class="muted">
-          Os princípios que se repetem nos projetos: camadas, validação contra a fonte oficial,
-          privacidade desde o desenho e infraestrutura que custa perto de zero.
-        </p>
-      </div>
-      <a class="btn primary" href="/arquitetura">Ler →</a>
-    </div>
-  </section>
-
-  <section class="section wrap">
-    <div class="section-head">
-      <h2>Dashboards</h2>
-      <a href="/dashboards">Abrir os painéis →</a>
-    </div>
-    <div class="grid c3">
-      {dashboards.map((d) => (
-        <a class="card dash" href={`/dashboards#${d.id}`}>
-          <span class="area" style="color:var(--c-bi)">{d.contexto}</span>
-          <h3>{d.titulo}</h3>
-          <p>{d.descricao}</p>
-        </a>
-      ))}
-    </div>
-  </section>
+  <Projetos />
+  <Dashboards />
+  <Arquitetura />
+  <Sobre />
 </Base>
 
 <style>
@@ -104,13 +56,6 @@ const competencias = [
   @media (min-width: 720px) { .foto { width: 100%; order: 0; } }
   .hero h1 { max-width: 22ch; text-wrap: balance; }
   .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
-  .comp { padding: 22px; }
-  .comp p { margin: 0; color: var(--ink-2); }
-  .faixa { padding: 28px; display: flex; gap: 20px; align-items: center; justify-content: space-between; flex-wrap: wrap; background: var(--accent-soft); border-color: transparent; }
-  .faixa > div { max-width: 60ch; }
-  .faixa p:last-child { margin: 0; }
-  .dash { padding: 20px; color: inherit; text-decoration: none; display: flex; flex-direction: column; gap: 8px; }
-  .dash:hover { border-color: var(--ink-3); }
-  .dash h3, .dash p { margin: 0; }
-  .dash p { color: var(--ink-2); font-size: 0.95rem; }
+  /* Linha fina entre as seções da página única */
+  :global(main > section.section) { border-top: 1px solid var(--line); margin-top: 40px; }
 </style>

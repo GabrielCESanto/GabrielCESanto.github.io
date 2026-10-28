@@ -1,0 +1,27 @@
+---
+import ProjetoCard from '../ProjetoCard.astro';
+import { listarProjetos } from '../../data/projetos';
+
+const projetos = await listarProjetos();
+---
+<section id="projetos" class="section wrap">
+  <p class="eyebrow">Projetos</p>
+  <h2>Estudos de caso</h2>
+  <p class="lead">
+    Cada projeto conta o problema, a arquitetura, as decisões (e o que foi descartado), como os dados
+    foram validados e o resultado. Clique para ler o estudo completo.
+  </p>
+  <div class="grid c3">{projetos.map((p) => (
+    <div class="rel">
+      {p.data.rascunho && <span class="rascunho">rascunho · só no dev</span>}
+      <ProjetoCard projeto={p} />
+    </div>
+  ))}</div>
+</section>
+
+<style>
+  .lead { margin-bottom: 28px; }
+  .rel { position: relative; display: flex; flex-direction: column; }
+  .rel > :global(a) { flex: 1; }
+  .rascunho { position: absolute; z-index: 2; top: 10px; right: 10px; background: #c0392b; color: #fff; font: 600 0.72rem/1 var(--mono); padding: 5px 8px; border-radius: 6px; }
+</style>

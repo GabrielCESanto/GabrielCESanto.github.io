@@ -22,10 +22,11 @@ npm run preview    # serve o dist/ para conferir antes de publicar
 | Caminho | O que é |
 |---|---|
 | `src/content/projetos/*.md` | **Estudos de caso.** Um arquivo por projeto; o nome do arquivo vira a URL (`/projetos/<nome>`) |
-| `src/data/dashboards.ts` | Painéis do Power BI (links "Publicar na Web") e BIs web |
+| `src/data/dashboards.ts` | Painéis da seção Dashboards: Power BI (links "Publicar na Web") e o SISU Lens |
 | `src/data/perfil.ts` | Nome, cargo, frase e links (LinkedIn, GitHub, WhatsApp) |
-| `src/pages/` | Páginas: início, projetos, dashboards, arquitetura, sobre |
-| `src/pages/sobre.astro` | Experiência, formação e stack (edite a lista no topo do arquivo) |
+| `src/pages/index.astro` | **Página única:** início e as seções, na ordem do menu |
+| `src/components/secoes/` | Uma seção por arquivo: Projetos, Dashboards, Arquitetura, Sobre (experiência, formação e stack ficam em listas no topo do `Sobre.astro`) |
+| `src/pages/projetos/[slug].astro` | Página de cada estudo de caso |
 | `src/components/icones.ts` | Ícones usados nas capas dos cards (campo `icones` de cada projeto) |
 | `public/img/` | Foto e imagens usadas dentro dos estudos de caso (prefira `.webp` com até 1400 px) |
 | `docs/` | Guia de documentação e modelos para os outros repositórios |

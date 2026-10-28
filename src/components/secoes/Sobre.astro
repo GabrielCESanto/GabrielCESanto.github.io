@@ -1,6 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
-import { perfil } from '../data/perfil';
+import { perfil } from '../../data/perfil';
 
 // Linha do tempo: mais recente primeiro. Fonte: currículo de set/2026.
 const experiencia = [
@@ -53,6 +52,13 @@ const experiencia = [
   },
 ];
 
+const competencias = [
+  { titulo: 'Engenharia de dados', texto: 'Pipelines em camadas (bronze, prata, ouro), orquestração com Prefect e GitHub Actions, Parquet, DuckDB, MinIO e Docker.' },
+  { titulo: 'BI e modelagem', texto: 'Modelagem dimensional (esquema estrela), Power BI com DAX e painéis web próprios com React e ECharts.' },
+  { titulo: 'Ciência de dados e IA', texto: 'Estatística aplicada, CRISP-DM, visão computacional (OpenCV, OCR) e processamento de áudio para extrair dados de onde eles não existem em tabela. IA como par de programação no dia a dia.' },
+  { titulo: 'Gestão', texto: 'Coordenação de um time de 3 pessoas, priorização de demandas de vários setores e entrega com impacto medido.' },
+];
+
 const formacao = [
   {
     titulo: 'Bacharelado em Engenharia de Computação',
@@ -82,66 +88,65 @@ const stack = [
   { grupo: 'Web e back-end', itens: ['React', 'Supabase', 'Edge Functions', 'Row Level Security'] },
 ];
 ---
-<Base titulo="Sobre" descricao={`Sobre ${perfil.nome}: experiência, formação e stack.`}>
-  <section class="wrap topo-pag">
-    <img class="foto" src={perfil.foto} alt={`Foto de ${perfil.nomeCurto}`} width="480" height="480" />
-    <div>
-      <p class="eyebrow">Sobre · {perfil.local}</p>
-      <h1>{perfil.nome}</h1>
-      <p class="lead">
-        Engenheiro de computação (UTFPR) e coordenador de dados. Comecei analisando partidas de
-        e-sports, passei pelo BI e fui descendo a pilha: do dashboard para o modelo, do modelo para o
-        pipeline, do pipeline para a arquitetura. Meu próximo passo é unir isso à ciência de dados,
-        com interesse especial em esportes e finanças.
-      </p>
-      <div class="cta">
-        <a class="btn primary" href={perfil.links.linkedin}>LinkedIn</a>
-        <a class="btn" href={perfil.links.github}>GitHub</a>
-        <a class="btn" href={perfil.links.whatsapp}>WhatsApp</a>
-      </div>
-    </div>
-  </section>
+<section id="sobre" class="section wrap">
+  <p class="eyebrow">Sobre · {perfil.local}</p>
+  <h2>{perfil.nome}</h2>
+  <p class="lead">
+    Engenheiro de computação (UTFPR) e coordenador de dados. Comecei analisando partidas de e-sports,
+    passei pelo BI e fui descendo a pilha: do dashboard para o modelo, do modelo para o pipeline, do
+    pipeline para a arquitetura. Meu próximo passo é unir isso à ciência de dados, com interesse
+    especial em esportes e finanças.
+  </p>
 
-  <section class="section wrap">
-    <h2>Experiência</h2>
+  <div class="sub">
+    <h3>O que eu faço</h3>
+    <div class="grid c2">
+      {competencias.map((c) => (
+        <div class="card bloco"><h4>{c.titulo}</h4><p class="muted">{c.texto}</p></div>
+      ))}
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Experiência</h3>
     <ol class="tl">
       {experiencia.map((e) => (
         <li>
           <span class="per">{e.periodo}</span>
           <div>
-            <h3>{e.cargo} <span class="muted">· {e.lugar}</span></h3>
+            <h4>{e.cargo} <span class="muted">· {e.lugar}</span></h4>
             <ul>{e.itens.map((i) => <li>{i}</li>)}</ul>
           </div>
         </li>
       ))}
     </ol>
-  </section>
+  </div>
 
-  <section class="section wrap">
-    <h2>Formação</h2>
+  <div class="sub">
+    <h3>Formação</h3>
     <div class="grid c2">
       {formacao.map((f) => (
         <div class="card bloco">
-          <h3>{f.titulo}</h3>
+          <h4>{f.titulo}</h4>
           <p class="eyebrow">{f.lugar}</p>
           <p class="muted">{f.texto}</p>
           {f.link && <a href={f.link.href}>{f.link.rotulo}</a>}
         </div>
       ))}
     </div>
-  </section>
+  </div>
 
-  <section class="section wrap">
-    <h2>Liderança</h2>
+  <div class="sub">
+    <h3>Liderança</h3>
     <div class="grid c3">
       {lideranca.map((l) => (
-        <div class="card bloco"><h3>{l.titulo}</h3><p class="muted">{l.texto}</p></div>
+        <div class="card bloco"><h4>{l.titulo}</h4><p class="muted">{l.texto}</p></div>
       ))}
     </div>
-  </section>
+  </div>
 
-  <section class="section wrap">
-    <h2>Stack</h2>
+  <div class="sub">
+    <h3>Stack</h3>
     <div class="grid c3">
       {stack.map((s) => (
         <div class="card st">
@@ -150,24 +155,36 @@ const stack = [
         </div>
       ))}
     </div>
-  </section>
-</Base>
+  </div>
+
+  <div class="card contato">
+    <div>
+      <h3>Vamos conversar</h3>
+      <p class="muted">Vagas, projetos de dados ou troca de ideias sobre engenharia e ciência de dados.</p>
+    </div>
+    <div class="cta">
+      <a class="btn primary" href={perfil.links.linkedin}>LinkedIn</a>
+      <a class="btn" href={perfil.links.whatsapp}>WhatsApp</a>
+      <a class="btn" href={perfil.links.github}>GitHub</a>
+    </div>
+  </div>
+</section>
 
 <style>
-  .topo-pag { padding-top: 56px; padding-bottom: 8px; display: grid; gap: 28px; align-items: center; }
-  @media (min-width: 720px) { .topo-pag { grid-template-columns: 220px 1fr; gap: 40px; } }
-  .foto { width: 180px; aspect-ratio: 1; object-fit: cover; border-radius: 26px; border: 1px solid var(--line); }
-  @media (min-width: 720px) { .foto { width: 100%; } }
-  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+  .sub { margin-top: 44px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .contato { margin-top: 48px; padding: 26px; display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; background: var(--accent-soft); border-color: transparent; }
+  .contato h3, .contato p { margin: 0 0 4px; }
   .tl { list-style: none; margin: 0; padding: 0; border-left: 2px solid var(--line); }
   .tl > li { display: grid; gap: 4px 24px; padding: 0 0 26px 22px; position: relative; }
   .tl > li::before { content: ''; position: absolute; left: -7px; top: 6px; width: 12px; height: 12px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
   @media (min-width: 720px) { .tl > li { grid-template-columns: 170px 1fr; } }
   .per { font: 500 0.85rem/1.6 var(--mono); color: var(--ink-3); }
-  .tl h3 { margin: 0 0 6px; }
+  .tl h4 { margin: 0 0 6px; }
   .tl ul { margin: 0; padding-left: 1.1em; color: var(--ink-2); }
   .bloco { padding: 22px; display: flex; flex-direction: column; gap: 6px; }
-  .bloco h3, .bloco p { margin: 0; }
+  .bloco h4, .bloco p { margin: 0; }
+  .bloco h4 { font-size: 1.1rem; }
   .bloco .eyebrow { margin: 0 0 4px; }
   .st { padding: 18px; }
   .st .eyebrow { margin-bottom: 10px; }

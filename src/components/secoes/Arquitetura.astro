@@ -1,11 +1,9 @@
 ---
-import Base from '../layouts/Base.astro';
-
 const principios = [
   {
     titulo: 'Camadas, sempre',
     texto: 'Bronze guarda a fonte como veio (padronizada, nunca "corrigida"); prata limpa, tipa e liga; ouro responde perguntas. Quando algo dá errado, reprocesso a partir da camada anterior, sem voltar à fonte.',
-    onde: 'SISU Lens, varejo farmacêutico',
+    onde: 'SISU Lens',
   },
   {
     titulo: 'Validar contra uma referência',
@@ -48,10 +46,6 @@ const matriz = [
     projeto: 'Duo Mariel', slug: 'duo-mariel',
     c: ['App web, Edge Function', 'Postgres + Storage (Supabase)', 'SQL, migrações versionadas', 'RLS, revisão do código gerado por IA', 'GitHub Actions (deploy, keep-alive)', 'PWA React + Realtime'],
   },
-  {
-    projeto: 'Varejo farmacêutico (trabalho)', slug: null,
-    c: ['ERP via API, scraping, CSV', 'MinIO', 'DuckDB', '—', 'Prefect em Docker', 'Power BI (20+)'],
-  },
 ];
 
 const referencia = `flowchart LR
@@ -74,54 +68,46 @@ const referencia = `flowchart LR
   P --> D3[Modelos de ML]
   O[[Orquestrador<br/>Prefect · GitHub Actions]] -.-> B & S & G`;
 ---
-<Base titulo="Arquitetura" descricao="Os princípios de arquitetura de dados que se repetem nos meus projetos.">
-  <section class="wrap topo-pag">
-    <p class="eyebrow">Arquitetura de dados</p>
-    <h1>Como eu desenho plataformas de dados</h1>
-    <p class="lead">
-      Os projetos têm tamanhos e fontes diferentes, mas o desenho se repete. Esta página resume os
-      princípios, a arquitetura de referência e onde cada um aparece na prática.
-    </p>
-  </section>
+<section id="arquitetura" class="section wrap">
+  <p class="eyebrow">Arquitetura de dados</p>
+  <h2>Como eu desenho plataformas de dados</h2>
+  <p class="lead">
+    Os projetos têm tamanhos e fontes diferentes, mas o desenho se repete. Aqui estão a arquitetura de
+    referência, os princípios e onde cada um aparece na prática.
+  </p>
 
-  <section class="wrap">
-    <h2>Arquitetura de referência</h2>
-    <pre data-language="mermaid">{referencia}</pre>
-  </section>
+  <h3>Arquitetura de referência</h3>
+  <pre data-language="mermaid">{referencia}</pre>
 
-  <section class="section wrap">
-    <h2>Princípios</h2>
-    <div class="grid c3">
-      {principios.map((p, i) => (
-        <div class="card pr">
-          <span class="num">{String(i + 1).padStart(2, '0')}</span>
-          <h3>{p.titulo}</h3>
-          <p>{p.texto}</p>
-          <p class="onde">{p.onde}</p>
-        </div>
-      ))}
-    </div>
-  </section>
+  <h3 class="sub">Princípios</h3>
+  <div class="grid c3">
+    {principios.map((p, i) => (
+      <div class="card pr">
+        <span class="num">{String(i + 1).padStart(2, '0')}</span>
+        <h4>{p.titulo}</h4>
+        <p>{p.texto}</p>
+        <p class="onde">{p.onde}</p>
+      </div>
+    ))}
+  </div>
 
-  <section class="section wrap">
-    <h2>Os projetos, camada por camada</h2>
-    <div class="tabela card">
-      <table>
-        <thead><tr><th>Projeto</th>{camadas.map((c) => <th>{c}</th>)}</tr></thead>
-        <tbody>
-          {matriz.map((m) => (
-            <tr>
-              <th scope="row">{m.slug ? <a href={`/projetos/${m.slug}`}>{m.projeto}</a> : m.projeto}</th>
-              {m.c.map((x) => <td>{x}</td>)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  </section>
+  <h3 class="sub">Os projetos, camada por camada</h3>
+  <div class="tabela card">
+    <table>
+      <thead><tr><th>Projeto</th>{camadas.map((c) => <th>{c}</th>)}</tr></thead>
+      <tbody>
+        {matriz.map((m) => (
+          <tr>
+            <th scope="row"><a href={`/projetos/${m.slug}`}>{m.projeto}</a></th>
+            {m.c.map((x) => <td>{x}</td>)}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 
-  <section class="section wrap"><div class="prose">
-    <h2>Como eu documento decisões</h2>
+  <div class="prose sub">
+    <h3>Como eu documento decisões</h3>
     <p>
       Cada estudo de caso tem uma tabela <strong>Decisão · Alternativa descartada · Por quê</strong>.
       É uma versão curta de um <em>Architecture Decision Record</em> (ADR): o importante não é só o que
@@ -133,13 +119,15 @@ const referencia = `flowchart LR
       e limitações conhecidas. As limitações também ficam escritas, porque um pipeline sem limitações
       documentadas só não foi testado o bastante.
     </p>
-  </div></section>
-</Base>
+  </div>
+</section>
 
 <style>
-  .topo-pag { padding-top: 56px; padding-bottom: 24px; }
+  .lead { margin-bottom: 28px; }
+  .sub { margin-top: 48px; }
   .pr { padding: 22px; display: flex; flex-direction: column; gap: 8px; }
-  .pr h3, .pr p { margin: 0; }
+  .pr h4, .pr p { margin: 0; }
+  .pr h4 { font-size: 1.1rem; }
   .pr p { color: var(--ink-2); font-size: 0.95rem; }
   .pr .onde { margin-top: auto; padding-top: 8px; font: 0.8rem var(--mono); color: var(--accent); }
   .num { font: 600 0.8rem/1 var(--mono); color: var(--ink-3); }
